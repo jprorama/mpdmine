@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# run the mpd check script
+# note: expects path to the dir with mpd.slice.*.json files
+# taken from README.md in mdp distro
+#
+# SBATCH --job-name check-mpd
+
+python mpd/src/check.py mpd/data
