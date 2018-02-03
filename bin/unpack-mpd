@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# unpack the downloaded mpd data set
+# assume the mdp tarball is in the cwd
+
+mkdir mpd
+cd mpd
+tar -xzf ../mpd.v1.tgz
