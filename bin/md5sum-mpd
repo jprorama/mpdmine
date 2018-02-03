@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# validate the md5sums of the mpd slices
+# see README.md of mpd
+#
+# SBATCH --job-name md5sum-mpd
+
+cd mpd
+md5sum -c md5sums > $TMPDIR/mpd-md5sums
+numwrong=`grep -v OK $TMPDIR/mpd-md5sums | wc -l`
+if [ $numwrong -gt 0 ]
+then
+  echo md5sums FAILED
+else
+  echo md5sums OK
+fi
+
+# debug
+# cd ..
+# mv $TMPDIR/mpd-md5sums out/
+
+rm -f $TMPDIR/mpd-md5sums
