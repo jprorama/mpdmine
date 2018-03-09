@@ -1,0 +1,3 @@
+[submodule "mpd"]
+	path = mpd
+	url = git@gitlab.com:jprorama/mpd.git
