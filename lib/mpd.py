@@ -33,7 +33,7 @@ def create_dict(df):
                        + df.schema.fields)
 
    df=df.rdd.zipWithIndex()\
-                      .map(lambda (row, id): {k:v
+                      .map(lambda row, id: {k:v
                                               for k, v
                                               in row.asDict().items() + [("id", id)]})\
                       .toDF(newSchema)
