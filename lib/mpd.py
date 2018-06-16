@@ -8,7 +8,7 @@ def load(spark, dir, limit):
    filenames = os.listdir(dir)
    count = 0
    for filename in sorted(filenames):
-      if filename.startswith("spark.mpd.slice.") and filename.endswith(".json"):
+      if filename.endswith(".json"):
          newDF =  spark.read.json(dir + "/" + filename)
          if count > 0:
             df = df.union(newDF)
