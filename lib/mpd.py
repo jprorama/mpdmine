@@ -61,3 +61,20 @@ def create_taa_vec(pdf, tdict, aldict, ardict):
                      and playlist.artist_uri = artist.artist_uri")
 
    return pvec
+
+def plothist(df, col, buckets):
+   """
+   Doing the heavy lifting in Spark. We could leverage the `histogram` function from the RDD api
+
+   this comes from:
+   https://stackoverflow.com/a/39891776
+   """
+   histogram = df.select(col).rdd.flatMap(lambda x: x).histogram(buckets)
+
+   # Loading the Computed Histogram into a Pandas Dataframe for plotting
+   pd.DataFrame(
+      list(zip(*histogram)),
+      columns=['bin', 'frequency']
+   ).set_index(
+      'bin'
+   ).plot(kind='bar');
