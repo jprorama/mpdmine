@@ -1,3 +1,10 @@
+# generic pyspark and jupyter notebook initialization
+from pyspark.sql import SparkSession
+import pyspark.sql.functions as f
+import pandas as pd
+import matplotlib as plt
+
+# import for utilies in this module
 import os
 from pyspark.sql.functions import explode
 from pyspark.sql.types import StructField, StructType, LongType
