@@ -7,7 +7,7 @@ import matplotlib as plt
 # import for utilies in this module
 import os
 from pyspark.sql.functions import explode
-from pyspark.sql.types import StructField, StructType, LongType
+from pyspark.sql.types import StructField, StructType, LongType, StringType
 from pyspark.ml.feature import CountVectorizer
 
 def load(spark, dir, limit):
@@ -97,3 +97,19 @@ def vectorizecol(df, incol, outcol):
    result = model.transform(df)
 
    return model, result
+
+def buildvocabdf(spark, vocabulary):
+   """
+   build a vocabulary dataframe with id using list of input words
+   useful for joining with results
+   """
+
+   # note: trying to provide the column name in the schema but get errors
+   # opt for renamed workaround
+   #schema = StructType([StructField("term", StringType(), nullable=False)])
+   #df = spark.createDataFrame(vocabulary, schema)
+   df = df.withColumnRenamed("value", "term")
+   df = spark.createDataFrame(vocabulary, StringType())
+   df = df.withColumn("tid", f.monotonically_increasing_id())
+
+   return df
