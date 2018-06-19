@@ -8,6 +8,7 @@ import matplotlib as plt
 import os
 from pyspark.sql.functions import explode
 from pyspark.sql.types import StructField, StructType, LongType
+from pyspark.ml.feature import CountVectorizer
 
 def load(spark, dir, limit):
    """ load the mpd dataset from dir into spark, limit files by count """
@@ -85,3 +86,14 @@ def plothist(df, col, buckets):
    ).set_index(
       'bin'
    ).plot(kind='bar');
+
+def vectorizecol(df, incol, outcol):
+   """
+   Vectorize a column of terms and add it to the dataframe
+   return df and model
+   """
+   cv = CountVectorizer(inputCol=incol, outputCol=outcol)
+   model = cv.fit(df)
+   result = model.transform(df)
+
+   return model, result
