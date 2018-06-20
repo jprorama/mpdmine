@@ -113,3 +113,13 @@ def buildvocabdf(spark, vocabulary):
    df = df.withColumn("tid", f.monotonically_increasing_id())
 
    return df
+
+def scatterplotfreq(dfcountcol):
+   """
+   input pandas dataframe of counts to plot the frequency of
+   """
+
+   Y=dfcountcol.select("count").toPandas()
+   X=pd.DataFrame({'X': range(1,Y.size+1,1)})
+
+   plt.pyplot.scatter(X,Y)
