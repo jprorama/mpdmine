@@ -108,8 +108,8 @@ def buildvocabdf(spark, vocabulary):
    # opt for renamed workaround
    #schema = StructType([StructField("term", StringType(), nullable=False)])
    #df = spark.createDataFrame(vocabulary, schema)
-   df = df.withColumnRenamed("value", "term")
    df = spark.createDataFrame(vocabulary, StringType())
+   df = df.withColumnRenamed("value", "term")
    df = df.withColumn("tid", f.monotonically_increasing_id())
 
    return df
