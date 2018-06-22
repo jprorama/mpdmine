@@ -87,12 +87,12 @@ def plothist(df, col, buckets):
       'bin'
    ).plot(kind='bar');
 
-def vectorizecol(df, incol, outcol):
+def vectorizecol(df, incol, outcol, size=1<<18):
    """
    Vectorize a column of terms and add it to the dataframe
    return df and model
    """
-   cv = CountVectorizer(inputCol=incol, outputCol=outcol)
+   cv = CountVectorizer(inputCol=incol, outputCol=outcol, vocabSize=size)
    model = cv.fit(df)
    result = model.transform(df)
 
