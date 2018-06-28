@@ -9,6 +9,7 @@ import os
 from pyspark.sql.functions import explode
 from pyspark.sql.types import StructField, StructType, LongType, StringType
 from pyspark.ml.feature import CountVectorizer
+import pyspark.ml.feature as mlf
 
 def load(spark, dir, limit):
    """ load the mpd dataset from dir into spark, limit files by count """
@@ -123,3 +124,21 @@ def scatterplotfreq(dfcountcol):
    X=pd.DataFrame({'X': range(1,Y.size+1,1)})
 
    plt.pyplot.scatter(X,Y)
+
+def canonicaltokens(df, inputColumn, outputColumn):
+   """
+   turn input column of strings into canonical format as output column of tokens
+   return as output column added to the dataframe
+   """
+
+   newname = df.withColumn("cleanname", \
+       f.regexp_replace(f.regexp_replace(f.rtrim(f.ltrim(f.col(inputColumn))), \
+       " (\w) (\w) ", "$1$2"), "(\w) (\w) (\w)$", "$1$2$3"))
+
+   newtokenizer = mlf.Tokenizer(inputCol="cleanname", outputCol="words")
+   chtokenized = newtokenizer.transform(newname).drop("cleanname")
+
+   stopwordremover = mlf.StopWordsRemover(inputCol="words", outputCol=outputColumn)
+   canonicalname = stopwordremover.transform(chtokenized).drop("words")
+
+   return canonicalname
