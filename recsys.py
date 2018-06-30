@@ -352,6 +352,9 @@ challengevec.printSchema()
 
 c2 = challengevec.withColumn("vlen", vectorlength("features"))
 
+# Clean challenge vector of zero length vectors
+
+challengevec = c2.where(c2.vlen > 1).drop("vlen")
 
 # In[53]:
 
