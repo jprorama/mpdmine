@@ -3,6 +3,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
 import pandas as pd
 import matplotlib as plt
+from pyspark.sql.window import Window as W
 
 # import for utilies in this module
 import os
@@ -111,7 +112,11 @@ def buildvocabdf(spark, vocabulary):
    #df = spark.createDataFrame(vocabulary, schema)
    df = spark.createDataFrame(vocabulary, StringType())
    df = df.withColumnRenamed("value", "term")
-   df = df.withColumn("tid", f.monotonically_increasing_id())
+   df = df.withColumn("mid", f.monotonically_increasing_id())
+
+   # build increase by one id
+   windowSpec = W.orderBy("mid")
+   df = df.withColumn("tid", f.row_number().over(windowSpec)).drop("mid")
 
    return df
 
