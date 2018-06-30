@@ -22,9 +22,9 @@ import mpd
 
 
 # Will allow us to embed images in the notebook
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 # change default plot size
-plt.rcParams['figure.figsize'] = (15,10)
+#plt.rcParams['figure.figsize'] = (15,10)
 
 
 # ## Load and prep data
