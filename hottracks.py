@@ -24,9 +24,9 @@ import mpd
 
 
 # Will allow us to embed images in the notebook
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 # change default plot size
-plt.rcParams['figure.figsize'] = (15,10)
+#plt.rcParams['figure.figsize'] = (15,10)
 
 
 # ## Load and prep data
@@ -94,13 +94,13 @@ vdf = mpd.buildvocabdf(spark, model.vocabulary)
 # In[8]:
 
 
-vdf.show(5)
+#vdf.show(5)
 
 
 # In[126]:
 
 
-vdf.describe("tid").show()
+#vdf.describe("tid").show()
 
 
 # In[42]:
@@ -132,7 +132,7 @@ hot100 = spark.createDataFrame(pd.read_pickle("neighborpl.pkl"))
 # In[133]:
 
 
-hot100.orderBy("pid").show(5)
+#hot100.orderBy("pid").show(5)
 
 
 # In[52]:
@@ -150,25 +150,25 @@ h100cnt = hot100.withColumn("reclen", arraylength(hot100.recpl))
 # In[135]:
 
 
-h100cnt.orderBy("reclen").show()
+#h100cnt.orderBy("reclen").show()
 
 
 # In[157]:
 
 
-h100cnt.groupBy("reclen").count().orderBy("reclen").show(5)
+#h100cnt.groupBy("reclen").count().orderBy("reclen").show(5)
 
 
 # In[136]:
 
 
-h100cnt.orderBy("reclen").groupBy("reclen").count().describe("count").show()
+#h100cnt.orderBy("reclen").groupBy("reclen").count().describe("count").show()
 
 
 # In[137]:
 
 
-h100cnt.describe("reclen").show()
+#h100cnt.describe("reclen").show()
 
 
 # We can see that most results will have gotten 100 neighbors
@@ -176,7 +176,7 @@ h100cnt.describe("reclen").show()
 # In[138]:
 
 
-mpd.plothist(h100cnt, "reclen", 11)
+#mpd.plothist(h100cnt, "reclen", 11)
 
 
 # In[139]:
@@ -194,7 +194,7 @@ h100withtracks = h100.join(result, result.pid == h100.recpid).drop(result.pid).d
 # In[43]:
 
 
-h100withtracks.show(5)
+#h100withtracks.show(5)
 
 
 # ## Get the ranked resutls of tracks from the recommended neighboring playlists.
@@ -208,7 +208,7 @@ trackrank = h100withtracks.select("pid", f.explode("track_uri").alias("track")).
 # In[158]:
 
 
-trackrank.orderBy("pid", f.desc("count")).show(5)
+#trackrank.orderBy("pid", f.desc("count")).show(5)
 
 
 # In[149]:
@@ -228,7 +228,7 @@ testpid = 1000061
 # In[164]:
 
 
-trackrank.where(f.col("pid") == testpid).show()
+#trackrank.where(f.col("pid") == testpid).show()
 
 
 # In[160]:
@@ -256,7 +256,7 @@ grank.printSchema()
 # In[162]:
 
 
-grank.where(f.col("pid") == testpid).orderBy(f.desc("count"), f.asc("tid")).show()
+#grank.where(f.col("pid") == testpid).orderBy(f.desc("count"), f.asc("tid")).show()
 
 
 # ## Eliminate tracks included in the search
@@ -282,7 +282,7 @@ recdf=cpl.select("playlist.pid", "playlist.tracks")
 # In[97]:
 
 
-recdf.describe("pid").show()
+#recdf.describe("pid").show()
 
 
 # test a playlist
@@ -302,7 +302,7 @@ existingtracks.printSchema()
 # In[183]:
 
 
-existingtracks.show()
+#existingtracks.show()
 
 
 # In[195]:
@@ -314,7 +314,7 @@ existingtracks.toPandas()["track"].tolist()
 # In[169]:
 
 
-grank.where(f.col("pid") == testpid).where(~grank.track.isin(existingtracks.toPandas()["track"].tolist())).show()
+#grank.where(f.col("pid") == testpid).where(~grank.track.isin(existingtracks.toPandas()["track"].tolist())).show()
 
 
 # ## Iterate over search results and provide track list
@@ -357,13 +357,13 @@ for row in hot100.limit(10).rdd.collect():
 # In[187]:
 
 
-recommended
+#recommended
 
 
 # In[194]:
 
 
-recommended["tracks"].apply(lambda x: len(x))
+#recommended["tracks"].apply(lambda x: len(x))
 
 
 # In[196]:
