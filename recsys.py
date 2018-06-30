@@ -106,7 +106,7 @@ featuredf.printSchema()
 # In[14]:
 
 
-featuredf.show(5)
+#featuredf.show(5)
 
 
 # ## Build feature vector
@@ -138,7 +138,7 @@ featurevec = featurevec.withColumnRenamed("featurevector", "features")
 # In[19]:
 
 
-featurevec.show(5)
+#featurevec.show(5)
 
 
 # ## Build LSH 
@@ -190,7 +190,7 @@ transform = mhmodel.transform(sparsevec)
 # In[27]:
 
 
-transform.show(5)
+#transform.show(5)
 
 
 # In[28]:
@@ -208,13 +208,13 @@ t2 = transform.withColumn("hlen", arraylength("hashes"))
 # In[30]:
 
 
-t2.orderBy("vlen").show(5)
+#t2.orderBy("vlen").show(5)
 
 
 # In[31]:
 
 
-t2.orderBy("hlen").show(5)
+#t2.orderBy("hlen").show(5)
 
 
 # ## Load Challenge set
@@ -312,7 +312,7 @@ challengedf.printSchema()
 # In[47]:
 
 
-challengedf.show(5)
+#challengedf.show(5)
 
 
 # ## Map challenge set into training vocab
@@ -338,7 +338,7 @@ challengevec.printSchema()
 # In[51]:
 
 
-challengevec.show(5)
+#challengevec.show(5)
 
 
 # In[52]:
@@ -350,7 +350,7 @@ c2 = challengevec.withColumn("vlen", vectorlength("features"))
 # In[53]:
 
 
-c2.orderBy("vlen").show(5)
+#c2.orderBy("vlen").show(5)
 
 
 # There are challenge set vectors that have a length of zero.  This shouldn't cause any problems because can just recommend top songs from the global data set here.
@@ -358,7 +358,7 @@ c2.orderBy("vlen").show(5)
 # In[54]:
 
 
-c2.where(c2.vlen == 0).describe("pid").show()
+#c2.where(c2.vlen == 0).describe("pid").show()
 
 
 # ## Find playlist matches for one challenge set
@@ -380,7 +380,7 @@ testpl = challengevec.limit(1)
 # In[57]:
 
 
-testpl.show(truncate=False)
+#testpl.show(truncate=False)
 
 
 # In[58]:
@@ -464,7 +464,7 @@ hot100.printSchema()
 # In[71]:
 
 
-hot100.show(5)
+#hot100.show(5)
 
 
 # In[72]:
@@ -536,10 +536,11 @@ recpd.append(pd.DataFrame(recommend))
 # In[83]:
 
 
-spark.createDataFrame(pd.DataFrame(recommend)).show()
+#spark.createDataFrame(pd.DataFrame(recommend)).show()
 
 
 # ## Build nearest neighbor playlists
+
 
 # In[84]:
 
