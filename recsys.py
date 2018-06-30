@@ -17,6 +17,11 @@ from pyspark.sql.types import IntegerType, StringType, ArrayType
 
 import mpd
 
+# build a sparksession for spark-submit
+spark = SparkSession.builder \
+     .appName("RecSys") \
+     .getOrCreate()
+
 
 # In[2]:
 
