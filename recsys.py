@@ -43,6 +43,7 @@ spark = SparkSession.builder \
 
 mpd_all=mpd.load(spark, "onebig", 1)
 
+mpd_all.cache()
 
 # ## Build track, artist and name features
 
