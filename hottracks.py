@@ -332,11 +332,13 @@ def gettracks(chpl, grank, recdf):
     # get the challenge playlist id
     testpid = chpl.pid
     
+    # skip removing given tracks, it's too expensive this way
     # get the provided tracks
-    existingtracks = recdf.where(recdf.pid == testpid).select(f.explode("tracks.track_uri").alias("track"))
+    #existingtracks = recdf.where(recdf.pid == testpid).select(f.explode("tracks.track_uri").alias("track"))
     
     # get the tracks from the global rank
-    df = grank.where(f.col("pid") == testpid).where(~grank.track.isin(existingtracks.toPandas()["track"].tolist()))
+    #df = grank.where(f.col("pid") == testpid).where(~grank.track.isin(existingtracks.toPandas()["track"].tolist()))
+    df = grank.where(f.col("pid") == testpid)
     
     tracklist = df.orderBy(f.desc("count"), f.asc("tid")).toPandas()["track"].tolist()
     
@@ -355,9 +357,10 @@ recommended = pd.DataFrame({"pid":0, "tracks":[]})
 # In[186]:
 
 
-for row in hot100.limit(10).rdd.collect():
+for row in hot100.limit(100).rdd.collect():
     rec = gettracks(row, grank, recdf)
     recommended = recommended.append(pd.DataFrame(rec))
+    print("DEBUG: Processed row: " + str(row.pid))
 
 
 # In[187]:
